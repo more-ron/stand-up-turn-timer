@@ -1,97 +1,68 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Module>
-<!-- Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *	
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License
--->
-	<ModulePrefs title="Hangout Starter">
-		<Require feature="rpc" />
-		<Require feature="views" />
-		<Require feature="locked-domain" />
-	</ModulePrefs>
-	<Content type="html"><![CDATA[     
+  <ModulePrefs title="Stand Up Timer">
+    <Require feature="rpc" />
+    <Require feature="views" />
+  </ModulePrefs>
+  <Content type="html"><![CDATA[
 
-<html>
-<style type="text/css">
-<!--
-.button {
-  border-radius: 3px;
-  -moz-border-radius: 3px;
-  background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ddd));
-  background: -moz-linear-gradient(top, #fff, #ddd);  
-  border: 1px solid #bbb;
-}
+  <html>
+    <head>
+      <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css" type="text/css" media="all" />
+      <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/themes/smoothness/jquery-ui.css" type="text/css" media="all" />
+      <link rel="stylesheet" href="//stand-up-turn-timer.googlecode.com/git/styles/style.css" type="text/css" media="all" />
+    </head>
+    <body style="font-size:11px">
+      <script src="//hangoutsapi.talkgadget.google.com/hangouts/api/hangout.js?v=1.4" ></script>
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+      <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/jquery-ui.min.js"></script>
+      <script src="//stand-up-turn-timer.googlecode.com/git/scripts/stand_up_timer.js"></script>
+      <script src="//stand-up-turn-timer.googlecode.com/git/scripts/main.js"></script>
 
-.button:active {
-	background: -webkit-gradient(linear, left top, left bottom, from(#aaa), to(#333)); 
-	background: -moz-linear-gradient(bottom, #ddd, #aaa); }
+      <div id="tabs">
+        <ul>
+          <li><a href="#tabs-main">Timer</a></li>
+          <li><a href="#tabs-about">About</a></li>
+        </ul>
+        <div id="tabs-main">
 
--->
-</style>
-<body>
+          <p>
+            The meeting should not be longer than
+            <input type="text" id="meeting-limit-input" value="15"/>
+            minutes...
+          </p>
+          <p>
+            <span class="meeting-countdown-display">...</span> minutes left
+          </p>
+          <p>
+            <span class="meeting-timer-display">...</span> minutes total
+          </p>
 
-<script src="https://hangoutsapi.talkgadget.google.com/hangouts/api/hangout.js?v=1.4" ></script>
+          <hr/>
 
-<h3>Simple Hangout App</h3>
+          <p>
+            Each speaker should not take longer than
+            <input type="text" id="speaker-limit-input" value="45"/>
+            seconds...
+          </p>
+          <p>
+            <span class="speaker-countdown-display">...</span> seconds left.
+          </p>
 
-<p>
-<input class="button" type="button" value="Show participants!" id="showParticipants" 
-    style="visibility:hidden;"
-    onClick="showParticipants()"/>
-</p>
+          <hr/>
 
-<div id="participantsDiv"></div>
+          <input type="button" value="Begin Speaker's Timer" class="speaker-timer-button"/>
+        </div>
+        <div id="tabs-about">
+          <a href="http://about.me/ronald.maravilla" target="_blank">About MoreRon</a>
+        </div>
+      </div>
 
-<hr>
+      <div class="speaker-progressbar" title="Time left for the current speaker."></div>
+      <div class="meeting-progressbar" title="Time left for the meeting."></div>
 
-<p><a href="http://developers.google.com/+/hangouts/getting-started">Read the docs</a> to learn more about developing hangouts!</a></p>
-
-<script>
-function showParticipants() {
-  var participants = gapi.hangout.getParticipants();
-
-  var retVal = '<p>Participants: </p><ul>';
-
-  for (var index in participants) {
-    var participant = participants[index];
-
-    if (!participant.person) {
-      retVal += '<li>A participant not running this app</li>';
-    }
-    retVal += '<li>' + participant.person.displayName + '</li>';
-  }
-
-  retVal += '</ul>';
-
-  var div = document.getElementById('participantsDiv');
-
-  div.innerHTML = retVal;
-}
-
-function init() {
-  // When API is ready...                                                         
-  gapi.hangout.onApiReady.add(
-      function(eventObj) {
-        if (eventObj.isApiReady) {
-          document.getElementById('showParticipants')
-            .style.visibility = 'visible';
-        }
-      });
-}
-
-// Wait for gadget to load.                                                       
-gadgets.util.registerOnLoadHandler(init);
-</script>
-</body>
-]]>
-</Content>
+    </body>
+  </html>
+  ]]>
+  </Content>
 </Module>
-

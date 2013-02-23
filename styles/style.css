@@ -1,0 +1,29 @@
+#tabs {
+  position:relative;
+}
+
+.speaker-timer-button {
+  position:absolute;
+  bottom:0;
+  right:0;
+}
+
+#meeting-limit-input {
+  width: 25;
+}
+
+#speaker-limit-input {
+  width: 25;
+}
+
+.meeting-progressbar {
+  margin-top: 10px;
+}
+
+.speaker-progressbar {
+  margin-top: 10px;
+}
+
+p {
+  margin-top: 5px;
+}
