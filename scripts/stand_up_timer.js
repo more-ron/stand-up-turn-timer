@@ -1,9 +1,11 @@
 window.standUpTimer = (function(){
   var self = {},
+      currentSpeakerStartTime,
+      currentState,
       defaultMeetingTimeLimit = 15, // minutes
       defaultSpeakerTimeLimit = 45, // seconds
-      currentSpeakerStartTime,
-      currentTime,
+      getCurrentTime = function(){ return (new Date).getTime(); },
+      hangoutData = gapi.hangout.data,
       meetingStartTime,
       meetingTimerInterval,
       millisecondsToMinutes,
@@ -18,8 +20,6 @@ window.standUpTimer = (function(){
       updateTimerWith,
       constructor = this;
 
-  currentTime = function(){ return (new Date).getTime(); };
-
   refreshState = function( appEvent ) {
     if(appEvent.state.speakerTimerClickedAt) {
       updateTimerWith(parseInt(appEvent.state.speakerTimerClickedAt));
@@ -28,9 +28,10 @@ window.standUpTimer = (function(){
 
   updateTimerWith = function(timestamp) {
     currentSpeakerStartTime = timestamp;
+    currentState            = hangoutData.getState();
 
-    if(self.meetingLimitInput.val() != gapi.hangout.data.getState().meetingLimitInputVal ){ self.meetingLimitInput.val(gapi.hangout.data.getState().meetingLimitInputVal); }
-    if(self.speakerLimitInput.val() != gapi.hangout.data.getState().speakerLimitInputVal ){ self.meetingLimitInput.val(gapi.hangout.data.getState().speakerLimitInputVal); }
+    if(self.meetingLimitInput.val() != currentState.meetingLimitInputVal ){ self.meetingLimitInput.val(currentState.meetingLimitInputVal); }
+    if(self.speakerLimitInput.val() != currentState.speakerLimitInputVal ){ self.meetingLimitInput.val(currentState.speakerLimitInputVal); }
 
     if(!meetingStartTime){ meetingStartTime = currentSpeakerStartTime; }
     if(!meetingTimerInterval){ meetingTimerInterval = setInterval(updateMeeting, 1000); }
@@ -39,23 +40,23 @@ window.standUpTimer = (function(){
 
   updateMeeting = function(){
     var expectedTotal = minutesToMilliseconds(parseFloat(self.meetingLimitInput.val())),
-        timediff      = (currentTime() - meetingStartTime),
+        timediff      = (getCurrentTime() - meetingStartTime),
         remaining     = (expectedTotal - timediff),
         percentage    = (remaining / expectedTotal) * 100.0;
 
-    self.meetingTimerDisplay.text(parseInt(millisecondsToMinutes(timediff)));
-    self.meetingCountdownDisplay.text(parseInt(millisecondsToMinutes(remaining)));
+    self.meetingTimerDisplay.text($.duration(timediff));
+    self.meetingCountdownDisplay.text($.duration(remaining));
     self.meetingProgressbar.progressbar({value: percentage});
   };
 
   updateSpeaker = function(){
     var expectedTotal = secondsToMilliseconds(parseFloat(self.speakerLimitInput.val())),
-        timediff      = (currentTime() - currentSpeakerStartTime),
+        timediff      = (getCurrentTime() - currentSpeakerStartTime),
         remaining     = (expectedTotal - timediff),
         percentage    = (remaining / expectedTotal) * 100.0;
 
-    self.speakerTimerDisplay.text(parseInt(millisecondsToSeconds(timediff)));
-    self.speakerCountdownDisplay.text(parseInt(millisecondsToSeconds(remaining)));
+    self.speakerTimerDisplay.text($.duration(timediff));
+    self.speakerCountdownDisplay.text($.duration(remaining));
     self.speakerProgressbar.progressbar({value: percentage});
   };
 
@@ -81,7 +82,7 @@ window.standUpTimer = (function(){
     updateMeetingLimit();
     updateSpeakerLimit();
 
-    gapi.hangout.data.onStateChanged.add( refreshState  )
+    hangoutData.onStateChanged.add( refreshState  )
 
     return self;
   };
@@ -92,9 +93,9 @@ window.standUpTimer = (function(){
     self.speakerTimerButton = speakerTimerButton;
 
     speakerTimerButton.on("click", function(){
-      timeNow = currentTime();
+      timeNow = getCurrentTime();
       updateTimerWith(timeNow);
-      gapi.hangout.data.setValue("speakerTimerClickedAt", "" + timeNow);
+      hangoutData.setValue("speakerTimerClickedAt", "" + timeNow);
     });
 
     return self;
@@ -106,7 +107,7 @@ window.standUpTimer = (function(){
     return self;
   };
   updateMeetingLimit = function(){
-    gapi.hangout.data.setValue("meetingLimitInputVal", self.meetingLimitInput.val());
+    hangoutData.setValue("meetingLimitInputVal", self.meetingLimitInput.val());
   };
   self.setMeetingLimitInput = function(meetingLimitInput){
     self.meetingLimitInput = meetingLimitInput;
@@ -136,7 +137,7 @@ window.standUpTimer = (function(){
     return self;
   };
   updateSpeakerLimit = function(){
-    gapi.hangout.data.setValue("speakerLimitInputVal", self.speakerLimitInput.val());
+    hangoutData.setValue("speakerLimitInputVal", self.speakerLimitInput.val());
   };
   self.setSpeakerLimitInput = function(speakerLimitInput){
     self.speakerLimitInput = speakerLimitInput;

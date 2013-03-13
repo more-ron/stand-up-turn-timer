@@ -16,6 +16,7 @@
       <script src="//hangoutsapi.talkgadget.google.com/hangouts/api/hangout.js?v=1.4" ></script>
       <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
       <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/jquery-ui.min.js"></script>
+      <script src="//stand-up-turn-timer.googlecode.com/git/scripts/jquery.duration.js"></script>
       <script src="//stand-up-turn-timer.googlecode.com/git/scripts/stand_up_timer.js"></script>
       <script src="//stand-up-turn-timer.googlecode.com/git/scripts/main.js"></script>
 
