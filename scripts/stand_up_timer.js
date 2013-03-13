@@ -20,6 +20,9 @@ window.standUpTimer = (function(){
       updateTimerWith,
       constructor = this;
 
+  // disable some display
+  $.duration.settings.disableMillisecondsDisplay = true;
+
   refreshState = function( appEvent ) {
     if(appEvent.state.speakerTimerClickedAt) {
       updateTimerWith(parseInt(appEvent.state.speakerTimerClickedAt));

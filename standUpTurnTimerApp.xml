@@ -33,10 +33,10 @@
             minutes...
           </p>
           <p>
-            <span class="meeting-countdown-display">...</span> minutes left
+            <span class="meeting-countdown-display">...</span> left
           </p>
           <p>
-            <span class="meeting-timer-display">...</span> minutes total
+            <span class="meeting-timer-display">...</span> total
           </p>
 
           <hr/>
@@ -47,7 +47,7 @@
             seconds...
           </p>
           <p>
-            <span class="speaker-countdown-display">...</span> seconds left.
+            <span class="speaker-countdown-display">...</span> left.
           </p>
 
           <hr/>

@@ -12,39 +12,35 @@
  * Copyright (c) 2012, Loïc Guillois (contact -[at]- loicguillois [*dot*] fr)
  */
 (function($) {
-  $.duration = function(milliseconds) {
-      return inWords(milliseconds);
-  };
-  var $d = $.duration;
+  var $d                  = function(milliseconds){ return $d.inWords(milliseconds); };
+  var intSnapCloserToZero = function(num){ return (num < 0) ? Math.ceil(num) : Math.floor(num); };
+  var substitute          = function(string, number){ return number ? (string.replace(/%d/i, number) + ((number > 1) || (number < -1) ? "s" : "") + " ") : ""; };
 
-  $.extend($.duration, {
+  $.duration = $d;
+
+  $.extend($d, {
     settings: {
       refreshMillis: 60000,
+      disableMillisecondsDisplay: false,
       strings: {
         milliseconds: "%d millisecond",
-        seconds: "%d second",
-        minutes: "%d minute",
-        hours: "%d hour",
-        days: "%d day",
-        months: "%d month",
-        years: "%d year"
+        seconds:      "%d second",
+        minutes:      "%d minute",
+        hours:        "%d hour",
+        days:         "%d day",
+        months:       "%d month",
+        years:        "%d year"
       }
     },
     inWords: function(milliseconds) {
-      var $l = this.settings.strings;
-
-      var ms = milliseconds % 1000;
-      var seconds = Math.floor((milliseconds % (1000 * 60) - ms) / 1000);
-      var minutes = Math.floor((milliseconds % (1000 * 60 * 60) - seconds) / (1000 * 60));
-      var hours = Math.floor((milliseconds % (1000 * 60 * 60 * 24) - minutes) / (1000 * 60 * 60));
-      var days = Math.floor((milliseconds % (1000 * 60 * 60 * 24 * 365) - hours) / (1000 * 60 * 60 * 24)) % 30;
-      var month = Math.floor((milliseconds % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30));
-      var years = Math.floor(milliseconds / (1000 * 60 * 60 * 24 * 365));
-
-      function substitute(stringOrFunction, number) {
-        var string = $.isFunction(stringOrFunction) ? stringOrFunction(number, milliseconds) : stringOrFunction;
-	return number ? (string.replace(/%d/i, number) + (number > 1 ? "s" : "") + " ") : "";
-      }
+      var $l      = this.settings.strings;
+      var ms      = intSnapCloserToZero(this.settings.disableMillisecondsDisplay ? 0 : (milliseconds % 1000));
+      var seconds = intSnapCloserToZero((milliseconds / (1000)) % (60));
+      var minutes = intSnapCloserToZero((milliseconds / (1000 * 60)) % (60));
+      var hours   = intSnapCloserToZero((milliseconds / (1000 * 60 * 60)) % (24));
+      var days    = intSnapCloserToZero((milliseconds / (1000 * 60 * 60 * 24)) % (30));
+      var month   = intSnapCloserToZero((milliseconds / (1000 * 60 * 60 * 24 * 30)) % (12));
+      var years   = intSnapCloserToZero((milliseconds / (1000 * 60 * 60 * 24 * 30 * 12)));
 
       return $.trim(substitute($l.years, years) + (substitute($l.months, month)) + (substitute($l.days, days)) + (substitute($l.hours, hours)) + (substitute($l.minutes, minutes)) + (substitute($l.seconds, seconds))  + (substitute($l.milliseconds, ms)));
     },
