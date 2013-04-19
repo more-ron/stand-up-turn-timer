@@ -28,6 +28,21 @@
         <div id="tabs-main">
 
           <p>
+            Each speaker should not take longer than
+            <input type="text" id="speaker-limit-input" value="45"/>
+            seconds...
+          </p>
+          <p>
+            <span class="speaker-countdown-display">...</span> left.
+          </p>
+
+          <p>
+            <input type="button" value="Remind speaker of the remaining time" class="speaker-remaining-time-reminder-button"/>
+          </p>
+
+          <hr/>
+
+          <p>
             The meeting should not be longer than
             <input type="text" id="meeting-limit-input" value="15"/>
             minutes...
@@ -40,21 +55,6 @@
           </p>
 
           <hr/>
-
-          <p>
-            Each speaker should not take longer than
-            <input type="text" id="speaker-limit-input" value="45"/>
-            seconds...
-          </p>
-          <p>
-            <span class="speaker-countdown-display">...</span> left.
-          </p>
-
-          <hr/>
-
-          <p>
-            <input type="button" value="Remind speaker of the remaining time" class="speaker-remaining-time-reminder-button"/>
-          </p>
 
           <input type="button" value="Begin Speaker's Timer" class="speaker-timer-button"/>
         </div>
