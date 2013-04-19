@@ -33,7 +33,7 @@ window.standUpTimer = (function(){
   updateTimerWith = function(timestamp) {
     currentSpeakerStartTime = timestamp;
     currentState            = hangoutData.getState();
-    hangoutData.setValue("speakerAlertedOvertime", false);
+    hangoutData.setValue("speakerAlertedOvertime", "false");
 
     if(self.meetingLimitInput.val() != currentState.meetingLimitInputVal ){ self.meetingLimitInput.val(currentState.meetingLimitInputVal); }
     if(self.speakerLimitInput.val() != currentState.speakerLimitInputVal ){ self.meetingLimitInput.val(currentState.speakerLimitInputVal); }
@@ -49,9 +49,9 @@ window.standUpTimer = (function(){
         remaining     = (expectedTotal - timediff),
         percentage    = (remaining / expectedTotal) * 100.0;
 
-    if(remaining < 0 && !hangoutData.getValue("speakerAlertedOvertime")){
+    if(remaining < 0 && (hangoutData.getValue("speakerAlertedOvertime") != "true")){
       hangoutLayout.displayNotice("Time's up! Please give the floor to the next speaker.", false);
-      hangoutData.setValue("speakerAlertedOvertime", true);
+      hangoutData.setValue("speakerAlertedOvertime", "true");
     }
 
     self.meetingTimerDisplay.text($.duration(timediff));
