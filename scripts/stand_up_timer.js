@@ -45,7 +45,7 @@ window.standUpTimer = (function(){
           hangoutLayout.displayNotice("Time's up! Please give the floor to the next speaker.", false);
           break;
         case "speakerRemindRemainingTime":
-          hangoutLayout.displayNotice("TBI", false);
+          hangoutLayout.displayNotice("Remaining time: " + $.duration(speakerTimeInfo.remaining()), false);
           break;
         default:
       }
@@ -114,6 +114,7 @@ window.standUpTimer = (function(){
     if(!self.speakerProgressbar){ self.setSpeakerProgressbar($(".speaker-progressbar")); }
     if(!self.speakerTimerDisplay){ self.setSpeakerTimerDisplay($(".speaker-timer-display")); }
     if(!self.speakerTimerButton){ self.setSpeakerTimerButton($(".speaker-timer-button")); }
+    if(!self.speakerRemainingTimeReminderButton){ self.setSpeakerRemainingTimeReminderButton($(".speaker-remaining-time-reminder-button")); }
 
     updateMeetingLimit();
     updateSpeakerLimit();
@@ -139,6 +140,15 @@ window.standUpTimer = (function(){
     });
 
     return self;
+  };
+
+  self.setSpeakerRemainingTimeReminderButton = function(speakerRemainingTimeReminderButton){
+    self.speakerRemainingTimeReminderButton = speakerRemainingTimeReminderButton;
+
+    speakerRemainingTimeReminderButton.on("click", function(){
+      displayMessage("speakerRemindRemainingTime");
+      hangoutData.sendMessage("speakerRemindRemainingTime");
+    });
   };
 
   self.setMeetingCountdownDisplay = function(meetingCountdownDisplay){

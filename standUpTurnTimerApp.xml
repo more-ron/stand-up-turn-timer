@@ -52,6 +52,10 @@
 
           <hr/>
 
+          <p>
+            <input type="button" value="Remind speaker of the remaining time" class="speaker-remaining-time-reminder-button"/>
+          </p>
+
           <input type="button" value="Begin Speaker's Timer" class="speaker-timer-button"/>
         </div>
         <div id="tabs-about">
