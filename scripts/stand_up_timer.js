@@ -3,6 +3,8 @@ window.standUpTimer = (function(){
       currentSpeakerStartTime,
       defaultMeetingTimeLimit = 15, // minutes
       defaultSpeakerTimeLimit = 90, // seconds
+      dispatchMessage,
+      displayMessage,
       getCurrentTime = function(){ return (new Date).getTime(); },
       hangoutData = gapi.hangout.data,
       hangoutLayout = gapi.hangout.layout,
@@ -36,6 +38,22 @@ window.standUpTimer = (function(){
     }
   };
 
+  displayMessage = function(message){
+    switch(message){
+      case "speakerAlertOvertime":
+        hangoutLayout.displayNotice("Time's up! Please give the floor to the next speaker.", false);
+        break;
+      case "speakerRemindRemainingTime":
+        hangoutLayout.displayNotice("TBI", false);
+        break;
+      default:
+    }
+  };
+
+  dispatchMessage = function( messageReceivedEvent ){
+    displayMessage(messageReceivedEvent.message);
+  };
+
   updateTimerWith = function(timestamp) {
     var currentSpeakerStartTimeWillChange = (currentSpeakerStartTime != timestamp),
         currentState                      = hangoutData.getState();
@@ -66,7 +84,7 @@ window.standUpTimer = (function(){
 
   updateSpeaker = function(){
     if(speakerTimeInfo.remaining() < 0 && (hangoutData.getValue("speakerAlertedOvertime") != "true")){
-      hangoutLayout.displayNotice("Time's up! Please give the floor to the next speaker.", false);
+      hangoutData.sendMessage("speakerAlertOvertime");
       hangoutData.setValue("speakerAlertedOvertime", "true");
     }
 
@@ -97,7 +115,8 @@ window.standUpTimer = (function(){
     updateMeetingLimit();
     updateSpeakerLimit();
 
-    hangoutData.onStateChanged.add( refreshState  )
+    hangoutData.onStateChanged.add( refreshState );
+    hangoutData.onMessageReceived.add( dispatchMessage );
 
     return self;
   };
