@@ -59,11 +59,11 @@ window.standUpTimer = (function(){
   updateTimerWith = function(timestamp) {
     var currentState = hangoutData.getState();
     currentSpeakerStartTime = timestamp;
+    meetingStartTime = (currentState.meetingStartTime ? parseInt(currentState.meetingStartTime) : currentSpeakerStartTime);
 
     if(self.meetingLimitInput.val() != currentState.meetingLimitInputVal ){ self.meetingLimitInput.val(currentState.meetingLimitInputVal); }
     if(self.speakerLimitInput.val() != currentState.speakerLimitInputVal ){ self.meetingLimitInput.val(currentState.speakerLimitInputVal); }
 
-    if(!meetingStartTime){ meetingStartTime = (currentState.meetingStartTime ? parseInt(currentState.meetingStartTime) : currentSpeakerStartTime); }
     if(!meetingTimerInterval){ meetingTimerInterval = setInterval(updateMeeting, 1000); }
     if(!speakerTimerInterval){ speakerTimerInterval = setInterval(updateSpeaker, 1000); }
   };
@@ -108,6 +108,7 @@ window.standUpTimer = (function(){
     if(!self.speakerProgressbar){ self.setSpeakerProgressbar($(".speaker-progressbar")); }
     if(!self.speakerTimerDisplay){ self.setSpeakerTimerDisplay($(".speaker-timer-display")); }
     if(!self.speakerTimerButton){ self.setSpeakerTimerButton($(".speaker-timer-button")); }
+    if(!self.resetTimerButton){ self.setResetTimerButton($(".reset-timer-button")); }
     if(!self.speakerRemainingTimeReminderButton){ self.setSpeakerRemainingTimeReminderButton($(".speaker-remaining-time-reminder-button")); }
 
     updateMeetingLimit();
@@ -130,6 +131,21 @@ window.standUpTimer = (function(){
       if(!hangoutData.getValue("meetingStartTime")){
         hangoutData.setValue("meetingStartTime", "" + timeNow);
       }
+      hangoutData.setValue("speakerTimerClickedAt", "" + timeNow);
+    });
+
+    return self;
+  };
+
+  self.setResetTimerButton = function(resetTimerButton){
+    var timeNow;
+
+    self.resetTimerButton = resetTimerButton;
+    resetTimerButton.on("click", function(){
+      timeNow = getCurrentTime();
+      updateTimerWith(timeNow);
+      meetingStartTime = timeNow;
+      hangoutData.setValue("meetingStartTime", "" + timeNow);
       hangoutData.setValue("speakerTimerClickedAt", "" + timeNow);
     });
 

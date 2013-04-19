@@ -37,7 +37,7 @@
           </p>
 
           <p>
-            <input type="button" value="Remind speaker of the remaining time" class="speaker-remaining-time-reminder-button"/>
+            <input type="button" value="Notify Remaining Time" class="speaker-remaining-time-reminder-button"/>
           </p>
 
           <hr/>
@@ -52,6 +52,10 @@
           </p>
           <p>
             <span class="meeting-timer-display">...</span> total
+          </p>
+
+          <p>
+            <input type="button" value="Reset Timer" class="reset-timer-button"/>
           </p>
 
           <hr/>
