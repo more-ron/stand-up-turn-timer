@@ -1,7 +1,6 @@
 window.standUpTimer = (function(){
   var self = {},
       currentSpeakerStartTime,
-      currentState,
       defaultMeetingTimeLimit = 15, // minutes
       defaultSpeakerTimeLimit = 90, // seconds
       getCurrentTime = function(){ return (new Date).getTime(); },
@@ -21,6 +20,13 @@ window.standUpTimer = (function(){
       updateTimerWith,
       constructor = this;
 
+  var speakerTimeInfo = {
+    expectedTotal : function(){ return secondsToMilliseconds(parseFloat(self.speakerLimitInput.val())); },
+    timediff      : function(){ return (getCurrentTime() - currentSpeakerStartTime); },
+    remaining     : function(){ return (this.expectedTotal() - this.timediff()); },
+    percentage    : function(){ return (this.remaining() / this.expectedTotal()) * 100.0; }
+  }
+
   // disable some display
   $.duration.settings.disableMillisecondsDisplay = true;
 
@@ -31,9 +37,13 @@ window.standUpTimer = (function(){
   };
 
   updateTimerWith = function(timestamp) {
-    currentSpeakerStartTime = timestamp;
-    currentState            = hangoutData.getState();
-    hangoutData.setValue("speakerAlertedOvertime", "false");
+    var currentSpeakerStartTimeWillChange = (currentSpeakerStartTime != timestamp),
+        currentState                      = hangoutData.getState();
+
+    if(currentSpeakerStartTimeWillChange){
+      currentSpeakerStartTime = timestamp;
+      hangoutData.setValue("speakerAlertedOvertime", "false");
+    }
 
     if(self.meetingLimitInput.val() != currentState.meetingLimitInputVal ){ self.meetingLimitInput.val(currentState.meetingLimitInputVal); }
     if(self.speakerLimitInput.val() != currentState.speakerLimitInputVal ){ self.meetingLimitInput.val(currentState.speakerLimitInputVal); }
@@ -55,19 +65,14 @@ window.standUpTimer = (function(){
   };
 
   updateSpeaker = function(){
-    var expectedTotal = secondsToMilliseconds(parseFloat(self.speakerLimitInput.val())),
-        timediff      = (getCurrentTime() - currentSpeakerStartTime),
-        remaining     = (expectedTotal - timediff),
-        percentage    = (remaining / expectedTotal) * 100.0;
-
-    if(remaining < 0 && (hangoutData.getValue("speakerAlertedOvertime") != "true")){
+    if(speakerTimeInfo.remaining() < 0 && (hangoutData.getValue("speakerAlertedOvertime") != "true")){
       hangoutLayout.displayNotice("Time's up! Please give the floor to the next speaker.", false);
       hangoutData.setValue("speakerAlertedOvertime", "true");
     }
 
-    self.speakerTimerDisplay.text($.duration(timediff));
-    self.speakerCountdownDisplay.text($.duration(remaining));
-    self.speakerProgressbar.progressbar({value: percentage});
+    self.speakerTimerDisplay.text($.duration(speakerTimeInfo.timediff()));
+    self.speakerCountdownDisplay.text($.duration(speakerTimeInfo.remaining()));
+    self.speakerProgressbar.progressbar({value: speakerTimeInfo.percentage()});
   };
 
   self.init = function(){
