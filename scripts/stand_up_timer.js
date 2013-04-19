@@ -36,7 +36,7 @@ window.standUpTimer = (function(){
     if(self.meetingLimitInput.val() != currentState.meetingLimitInputVal ){ self.meetingLimitInput.val(currentState.meetingLimitInputVal); }
     if(self.speakerLimitInput.val() != currentState.speakerLimitInputVal ){ self.meetingLimitInput.val(currentState.speakerLimitInputVal); }
 
-    if(!meetingStartTime){ meetingStartTime = currentSpeakerStartTime; }
+    if(!meetingStartTime){ meetingStartTime = parseInt(currentState.meetingStartTime); }
     if(!meetingTimerInterval){ meetingTimerInterval = setInterval(updateMeeting, 1000); }
     if(!speakerTimerInterval){ speakerTimerInterval = setInterval(updateSpeaker, 1000); }
   };
@@ -98,6 +98,9 @@ window.standUpTimer = (function(){
     speakerTimerButton.on("click", function(){
       timeNow = getCurrentTime();
       updateTimerWith(timeNow);
+      if(!hangoutData.getValue("meetingStartTime")){
+        hangoutData.setValue("meetingStartTime", "" + timeNow);
+      }
       hangoutData.setValue("speakerTimerClickedAt", "" + timeNow);
     });
 
