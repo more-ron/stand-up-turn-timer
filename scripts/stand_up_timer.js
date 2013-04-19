@@ -49,11 +49,6 @@ window.standUpTimer = (function(){
         remaining     = (expectedTotal - timediff),
         percentage    = (remaining / expectedTotal) * 100.0;
 
-    if(remaining < 0 && (hangoutData.getValue("speakerAlertedOvertime") != "true")){
-      hangoutLayout.displayNotice("Time's up! Please give the floor to the next speaker.", false);
-      hangoutData.setValue("speakerAlertedOvertime", "true");
-    }
-
     self.meetingTimerDisplay.text($.duration(timediff));
     self.meetingCountdownDisplay.text($.duration(remaining));
     self.meetingProgressbar.progressbar({value: percentage});
@@ -64,6 +59,11 @@ window.standUpTimer = (function(){
         timediff      = (getCurrentTime() - currentSpeakerStartTime),
         remaining     = (expectedTotal - timediff),
         percentage    = (remaining / expectedTotal) * 100.0;
+
+    if(remaining < 0 && (hangoutData.getValue("speakerAlertedOvertime") != "true")){
+      hangoutLayout.displayNotice("Time's up! Please give the floor to the next speaker.", false);
+      hangoutData.setValue("speakerAlertedOvertime", "true");
+    }
 
     self.speakerTimerDisplay.text($.duration(timediff));
     self.speakerCountdownDisplay.text($.duration(remaining));
