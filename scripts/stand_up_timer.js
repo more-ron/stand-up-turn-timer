@@ -80,7 +80,7 @@ window.standUpTimer = (function(){
   };
 
   updateSpeaker = function(){
-    if(speakerTimeInfo.remaining() < 0){
+    if((speakerTimeInfo.remaining() > -5000) && (speakerTimeInfo.remaining() < 0)){
       displayMessage("speakerAlertOvertime");
       hangoutData.sendMessage("speakerAlertOvertime");
     }
