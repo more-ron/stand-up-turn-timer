@@ -3,9 +3,10 @@ window.standUpTimer = (function(){
       currentSpeakerStartTime,
       currentState,
       defaultMeetingTimeLimit = 15, // minutes
-      defaultSpeakerTimeLimit = 45, // seconds
+      defaultSpeakerTimeLimit = 90, // seconds
       getCurrentTime = function(){ return (new Date).getTime(); },
       hangoutData = gapi.hangout.data,
+      hangoutLayout = gapi.hangout.layout,
       meetingStartTime,
       meetingTimerInterval,
       millisecondsToMinutes,
@@ -32,6 +33,7 @@ window.standUpTimer = (function(){
   updateTimerWith = function(timestamp) {
     currentSpeakerStartTime = timestamp;
     currentState            = hangoutData.getState();
+    hangoutData.setValue("speakerAlertedOvertime", false);
 
     if(self.meetingLimitInput.val() != currentState.meetingLimitInputVal ){ self.meetingLimitInput.val(currentState.meetingLimitInputVal); }
     if(self.speakerLimitInput.val() != currentState.speakerLimitInputVal ){ self.meetingLimitInput.val(currentState.speakerLimitInputVal); }
@@ -46,6 +48,11 @@ window.standUpTimer = (function(){
         timediff      = (getCurrentTime() - meetingStartTime),
         remaining     = (expectedTotal - timediff),
         percentage    = (remaining / expectedTotal) * 100.0;
+
+    if(remaining < 0 && !hangoutData.getValue("speakerAlertedOvertime")){
+      hangoutLayout.displayNotice("Time's up! Please give the floor to the next speaker.", false);
+      hangoutData.setValue("speakerAlertedOvertime", true);
+    }
 
     self.meetingTimerDisplay.text($.duration(timediff));
     self.meetingCountdownDisplay.text($.duration(remaining));
