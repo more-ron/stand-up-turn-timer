@@ -39,14 +39,16 @@ window.standUpTimer = (function(){
   };
 
   displayMessage = function(message){
-    switch(message){
-      case "speakerAlertOvertime":
-        hangoutLayout.displayNotice("Time's up! Please give the floor to the next speaker.", false);
-        break;
-      case "speakerRemindRemainingTime":
-        hangoutLayout.displayNotice("TBI", false);
-        break;
-      default:
+    if(!hangoutLayout.hasNotice()){
+      switch(message){
+        case "speakerAlertOvertime":
+          hangoutLayout.displayNotice("Time's up! Please give the floor to the next speaker.", false);
+          break;
+        case "speakerRemindRemainingTime":
+          hangoutLayout.displayNotice("TBI", false);
+          break;
+        default:
+      }
     }
   };
 
@@ -84,6 +86,7 @@ window.standUpTimer = (function(){
 
   updateSpeaker = function(){
     if(speakerTimeInfo.remaining() < 0 && (hangoutData.getValue("speakerAlertedOvertime") != "true")){
+      displayMessage("speakerAlertOvertime");
       hangoutData.sendMessage("speakerAlertOvertime");
       hangoutData.setValue("speakerAlertedOvertime", "true");
     }
