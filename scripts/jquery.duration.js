@@ -40,7 +40,7 @@
       var hours   = intSnapCloserToZero((milliseconds / (1000 * 60 * 60)) % (24));
       var days    = intSnapCloserToZero((milliseconds / (1000 * 60 * 60 * 24)) % (30));
       var month   = intSnapCloserToZero((milliseconds / (1000 * 60 * 60 * 24 * 30)) % (12));
-      var years   = intSnapCloserToZero((milliseconds / (1000 * 60 * 60 * 24 * 365)));
+      var years   = intSnapCloserToZero((milliseconds / (1000 * 60 * 60 * 24 * 30 * 12)));
 
       return $.trim(substitute($l.years, years) + (substitute($l.months, month)) + (substitute($l.days, days)) + (substitute($l.hours, hours)) + (substitute($l.minutes, minutes)) + (substitute($l.seconds, seconds))  + (substitute($l.milliseconds, ms)));
     },
