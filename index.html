@@ -1,11 +1,64 @@
-<!DOCTYPE html> <html class="no-js"> <head> <meta charset="utf-8"> <title></title> <meta content name="description"> <meta content="width=device-width" name="viewport"> <!-- Place favicon.ico and apple-touch-icon.png in the root directory --> <link rel="stylesheet" href="styles/main.722aa1ba.css">  <body ng-app="standUpTurnTimerApp"> <!--[if lt IE 7]>
-      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]--> <!-- Add your site or application content here --> <div class="container"> <div class="header"> <ul class="nav nav-pills pull-right"> <li class="active"> <a ng-href="#">Home</a> </li> <li> <a ng-href="#/about">About</a> </li> <li> <a ng-href="#">Contact</a> </li> </ul> <h3 class="text-muted">standUpTurnTimer</h3> </div> <div ng-view></div> <div class="footer"> <p> <span class="glyphicon glyphicon-heart"></span> from the Yeoman team </p> </div> </div> <!-- Google Analytics: change UA-XXXXX-X to be your site's ID --> <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+<!DOCTYPE html> <html class="no-js"> <head> <meta charset="utf-8"> <title></title> <meta content name="description"> <meta content="width=device-width" name="viewport"> <link href="//cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css" media="all" rel="stylesheet" type="text/css"> <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/themes/smoothness/jquery-ui.css" media="all" rel="stylesheet" type="text/css"> <!-- Place favicon.ico and apple-touch-icon.png in the root directory --> <link rel="stylesheet" href="styles/main.722aa1ba.css">  <body ng-app="standUpTurnTimerApp"> <script id="main-view" type="text/html"><div id='tabs'>
+        <ul>
+          <li>
+            <a href='#tabs-main'>Timer</a>
+          </li>
+          <li>
+            <a href='#tabs-about'>About</a>
+          </li>
+        </ul>
+        <div id='tabs-main'>
+          <p>
+            Each speaker should not take longer than
+            <input id='speaker-limit-input' type='text' value='45'>
+            seconds...
+          </p>
+          <p>
+            <span class='speaker-countdown-display'>...</span>
+            left.
+          </p>
+          <p>
+            <input class='speaker-remaining-time-reminder-button' type='button' value='Notify Remaining Time'>
+          </p>
+          <hr>
+          <p>
+            The meeting should not be longer than
+            <input id='meeting-limit-input' type='text' value='15'>
+            minutes...
+          </p>
+          <p>
+            <span class='meeting-countdown-display'>...</span>
+            left
+          </p>
+          <p>
+            <span class='meeting-timer-display'>...</span>
+            total
+          </p>
+          <p>
+            <input class='reset-timer-button' type='button' value='Reset Timer'>
+          </p>
+          <hr>
+          <input class='speaker-timer-button' type='button' value="Begin Speaker's Timer">
+        </div>
+        <div id='tabs-about'>
+          <ul>
+            <li>
+              <a href='http://about.me/ronald.maravilla' target='_blank'>About MoreRon</a>
+            </li>
+            <li>
+              <a href='https://github.com/more-ron/stand-up-turn-timer' target='_blank'>Source</a>
+            </li>
+            <li>
+              <a href='https://plus.google.com/hangouts/_?gid=714389851341' target='_blank'>Hangout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class='speaker-progressbar' title='Time left for the current speaker.'></div>
+      <div class='meeting-progressbar' title='Time left for the meeting.'></div></script> <script id="about-view" type="text/html"><a href='http://about.me/ronald.maravilla' target='_blank'>About MoreRon</a></script> <div class="container"> <div class="header"> <ul class="nav nav-pills pull-right"> <li class="active"> <a ng-href="#">Home</a> </li> <li> <a ng-href="#/about">About</a> </li> </ul> <h3 class="text-muted">StandUp Turn Timer</h3> </div> <div ng-view></div> <div class="footer"> <p> <span class="glyphicon glyphicon-heart"></span> </p> </div> </div> <!-- %script{src: "//plus.google.com/hangouts/_/api/v1/hangout.js"} --> <script src="//hangoutsapi.talkgadget.google.com/hangouts/api/hangout.js?v=1.4"></script> <!-- Google Analytics: change UA-XXXXX-X to be your site's ID --> <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
       
       ga('create', 'UA-XXXXX-X');
-      ga('send', 'pageview');</script> <!--[if lt IE 9]>
-    <script src="scripts/oldieshim.ff90b0fb.js"></script>
-    <![endif]--> <script src="scripts/vendor.7d9cade9.js"></script> <script src="scripts/scripts.33fba55e.js"></script>  
+      ga('send', 'pageview');</script> <script src="scripts/vendor.d5214279.js"></script> <script src="scripts/scripts.ca677163.js"></script>  
